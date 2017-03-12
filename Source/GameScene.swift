@@ -12,13 +12,18 @@ import GameplayKit
 class GameScene: SKScene {
     private var ball: SKSpriteNode!
     private var player: SKSpriteNode!
+    private var playerScore: SKLabelNode!
     private var opponent: SKSpriteNode!
+    private var opponentScore: SKLabelNode!
     private var playerController: PlayerController!
     private var score: Score!
 
     override func didMove(to view: SKView) {
+        let scoreNode = childNode(withName: "Score")
         player = childNode(withName: "Player") as? SKSpriteNode
         opponent = childNode(withName: "Opponent") as? SKSpriteNode
+        playerScore = scoreNode?.childNode(withName: "PlayerScore") as? SKLabelNode
+        opponentScore = scoreNode?.childNode(withName: "OpponentScore") as? SKLabelNode
         ball = childNode(withName: "Ball") as? SKSpriteNode
         playerController = PlayerController(scene: self, player: player)
         score = Score(player: 0, opponent: 0)
@@ -39,11 +44,13 @@ class GameScene: SKScene {
         switch ball.position.y {
         case let y where y <= player.position.y - 50:
             score = scoreController.incrementPlayerScore()
+            playerScore.text = String(score.player)
             ball.position = CGPoint.zero
             ball.physicsBody?.velocity = CGVector.zero
             ball.physicsBody?.applyImpulse(CGVector(dx: 20, dy: 20))
         case let y where y >= opponent.position.y - 50:
             score = scoreController.incrementOpponentScore()
+            opponentScore.text = String(score.opponent)
             ball.position = CGPoint.zero
             ball.physicsBody?.velocity = CGVector.zero
             ball.physicsBody?.applyImpulse(CGVector(dx: -20, dy: -20))
