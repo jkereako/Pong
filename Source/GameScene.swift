@@ -18,7 +18,9 @@ class GameScene: SKScene {
     private var playerController: PlayerController!
     private var score: Score!
 
-    override func didMove(to view: SKView) {
+    override func sceneDidLoad() {
+        super.sceneDidLoad()
+
         let scoreNode = childNode(withName: "Score")
         player = childNode(withName: "Player") as? SKSpriteNode
         opponent = childNode(withName: "Opponent") as? SKSpriteNode
@@ -35,7 +37,7 @@ class GameScene: SKScene {
 
         physicsBody = border
     }
-    
+
     override func update(_ currentTime: TimeInterval) {
         opponent.run(SKAction.moveTo(x: ball.position.x, duration: 1))
 
